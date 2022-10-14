@@ -16,57 +16,63 @@
     <div class="container">
         <h1>
             <span class="place"></span>
-            <span class="temp"> </span>°C
-        </h1>
-        <h2>
-            Humidity: <span class="humid"> </span>%
-            <br>
-            Wind speed: <span class="wind"> </span>km/h
-            <br>
-            Sky: <span class="descript"></span>
-        </h2>
-        <h3>
-        </h3>
-        <form id="city-form">
-            <input type="text" placeholder="Enter city" autocomplete="off" autofocus="on" id="enter-text-input" />
-            <input type="submit" value="Search">
-            <button class="btn btn-success" id="current-location-button">Current</button>
-        </form>
+            <span class="temp"></span><a href="#" id="celsius-link" class="active">°C</a></span>|<a href="#"
+                id="fahrenheit-link">°F</a></span>
+    </div>
+    </h1>
+    <h2>
+        Humidity: <span class="humid"> </span>%
+        <br>
+        Wind speed: <span class="wind"> </span> km/h
+        <br>
+        Sky condition: <span class="descript"></span><img src="" alt="" id="icon" width="50">
+    </h2>
+    <h3>
+    </h3>
+    <form id="city-form">
+        <input type="text" placeholder="Enter city" autocomplete="off" autofocus="on" id="enter-text-input" />
+        <input type="submit" value="Search">
+        <button class="btn btn-success" id="current-location-button">Current</button>
+    </form>
 
-        <h4>
-            FIVE DAY FORECAST
-        </h4>
-        <div class="row">
-            <div class="col">
-                <span class="days">Monday</span> 85°F
-                <br>
-                ⛅ Partly cloudy
-            </div>
-            <div class="col">
-                <span class="days">Tuesday</span> 85°F
-                <br>
-                ⛅ Partly cloudy
-            </div>
-            <div class="col">
-                <span class="days">Wednesday</span> 88°F
-                <br>
-                ☀️ Sunny
-            </div>
-            <div class="col">
-                <span class="days">Thursday</span> 86°F
-                <br>
-                ☀️ Sunny
-            </div>
-            <div class="col">
-                <span class="days">Friday</span> 83°F
-                <br>
-                ☀️ Sunny
-            </div>
-
-            <a href="https://github.com/lalaanndee/lala-weather-app" target="_blank">Open-source code</a>by Lanissa
-            Davis
+    <h4>
+        FIVE DAY FORECAST
+    </h4>
+    <div class="row">
+        <div class="col">
+            <span class="days">Monday</span> 85°F
+            <br>
+            ⛅ Partly cloudy
         </div>
-        <script src="./weather.js"></script>
+        <div class="col">
+            <span class="days">Tuesday</span> 85°F
+            <br>
+            ⛅ Partly cloudy
+        </div>
+        <div class="col">
+            <span class="days">Wednesday</span> 88°F
+            <br>
+            ☀️ Sunny
+        </div>
+        <div class="col">
+            <span class="days">Thursday</span> 86°F
+            <br>
+            ☀️ Sunny
+        </div>
+        <div class="col">
+            <span class="days">Friday</span> 83°F
+            <br>
+            ☀️ Sunny
+        </div>
+        <small>
+            <br>
+            <a href="https://github.com/lalaanndee/lala-weather-app" target="_blank">Open-source code</a> by Lanissa
+            Davis
+            <br>
+            <br>
+        </small>
+    </div>
+    <script src="./weather.js"></script>
 </body>
 
 </html>

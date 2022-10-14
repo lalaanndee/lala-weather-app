@@ -1,5 +1,5 @@
 h1 {
-  padding-top: 60px;
+  padding-top: 10px;
   text-align: center;
   margin-bottom: 1px;
 }
@@ -42,4 +42,25 @@ h4 {
 }
 button {
   margin-left: 170px;
+}
+body {
+  max-width: 600px;
+  margin: 0 auto;
+  border: 2px solid;
+  margin-top: 50px;
+  border-color: cornflowerblue;
+  border-radius: 25px;
+}
+#celsius-link {
+  text-decoration: none;
+  font-size: 20px;
+  vertical-align: super;
+}
+#fahrenheit-link {
+  text-decoration: none;
+  font-size: 20px;
+  vertical-align: super;
+}
+.active {
+  color: black;
 }
