@@ -22,34 +22,19 @@ function displayForecast(response) {
       forecastHTML =
         forecastHTML +
         `<div class="col-2">
-            <div class="days">${forecastDay.dt}</div>
-            <img src="http://openweathermap.org/img/wn/${
+            <div class="weather-forecast-date">${formatDay(
+              forecastDay.dt
+            )}</div>
+            <img src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${
               forecastDay.weather[0].icon
-            }@2x.png" alt="" width="36" />
-            <div class="forecast-temp">
-                <span class="forecast-temp-max">${Math.round(
+            }.png" alt="" width="36" />
+            <div class="weather-forecast-temperatures">
+                <span class="weather-forecast-temperature-max">${Math.round(
                   forecastDay.temp.max
-                )}°F</span>
-                <span class="forecast-temp-min">${Math.round(
+                )}°</span>
+                <span class="weather-forecast-temperature-min">${Math.round(
                   forecastDay.temp.min
-                )}°F</span>
-            </div>
-            </div>
-        `;
-      forecastHTML =
-        forecastHTML +
-        `<div class="col-2">
-            <div class="days"></div>
-            <img src="http://openweathermap.org/img/wn/${
-              forecastDay.weather[0].icon
-            }@2x.png" alt="" width="36" />
-            <div class="forecast-temp">
-                <span class="forecast-temp-max">${Math.round(
-                  forecastDay.temp.max
-                )}°F</span>
-                <span class="forecast-temp-min">${Math.round(
-                  forecastDay.temp.min
-                )}°F</span>
+                )}°</span>
             </div>
             </div>
         `;
@@ -59,8 +44,8 @@ function displayForecast(response) {
   forecastElement.innerHTML = forecastHTML;
 }
 function getForecast(coordinates) {
-  let apiKey = "2af2294c070d6253a56d0177591cdcd6";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&long=${coordinates.lon}&appid=${apiKey}&units=imperial`;
+  let apiKey = "629340f426964bddabao29a02d5038tc";
+  let apiUrl = `https://api.shecodes.io/v1/weather/forecast?query=${city}&key=629340f426964bddabao29a02d5038tc&units=imperial`;
   axios.get(apiUrl).then(displayForecast);
 }
 
@@ -75,10 +60,10 @@ function displayWeather(response) {
   let iconElement = document.querySelector("#icon");
   iconElement.setAttribute(
     "src",
-    `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
+    `http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${response.data.weather[0].icon}.png`
   );
   iconElement.setAttribute("alt", response.data.weather[0].description);
-  celsiusTemperature = response.data.main.temp;
+  fahrenheitTemperature = response.data.main.temp;
   getForecast(response.data.coord);
 }
 
@@ -87,13 +72,13 @@ function getCurrentLocation(event) {
   navigator.geolocation.getCurrentPosition(searchLocation);
 }
 function searchLocation(position) {
-  let apiKey = "2af2294c070d6253a56d0177591cdcd6";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}&units=imperial`;
+  let apiKey = "629340f426964bddabao29a02d5038tc";
+  let apiUrl = `https://api.shecodes.io/v1/weather/current?query=${position.coords.latitude}&lon=${position.coords.longitude}&key=629340f426964bddabao29a02d5038tc&units=imperial`;
   axios.get(apiUrl).then(displayWeather);
 }
 function searchCity(city) {
-  let apiKey = "2af2294c070d6253a56d0177591cdcd6";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`;
+  let apiKey = "629340f426964bddabao29a02d5038tc";
+  let apiUrl = `https://api.shecodes.io/v1/weather/current?query=${city}&key=629340f426964bddabao29a02d5038tc&units=imperial`;
   axios.get(apiUrl).then(displayWeather);
 }
 function handleSubmit(event) {
@@ -102,33 +87,10 @@ function handleSubmit(event) {
   searchCity(city);
 }
 
-function displayFahrenheitTemperature(event) {
-  event.preventDefault();
-  let temperatureElement = document.querySelector(".temp");
-  celsiusLink.classList.remove("active");
-  fahrenheitLink.classList.add("active");
-  let fahrenheitTemperature = (celsiusTemperature * 9) / 5 + 32;
-  temperatureElement.innerHTML = Math.round(fahrenheitTemperature);
-}
-function displayCelsiusTemperature(event) {
-  event.preventDefault();
-  celsiusLink.classList.add("active");
-  fahrenheitLink.classList.remove("active");
-  let temperatureElement = document.querySelector(".temp");
-  temperatureElement.innerHTML = Math.round(celsiusTemperature);
-}
-let celsiusTemperature = null;
-
 let form = document.querySelector("#city-form");
 form.addEventListener("submit", handleSubmit);
 
 let currentLocationButton = document.querySelector("#current-location-button");
 currentLocationButton.addEventListener("click", getCurrentLocation);
-
-let fahrenheitLink = document.querySelector("#fahrenheit-link");
-fahrenheitLink.addEventListener("click", displayFahrenheitTemperature);
-
-let celsiusLink = document.querySelector("#celsius-link");
-celsiusLink.addEventListener("click", displayCelsiusTemperature);
 
 searchCity("Queens");

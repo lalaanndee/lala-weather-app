@@ -51,16 +51,3 @@ body {
   border-color: cornflowerblue;
   border-radius: 25px;
 }
-#celsius-link {
-  text-decoration: none;
-  font-size: 20px;
-  vertical-align: super;
-}
-#fahrenheit-link {
-  text-decoration: none;
-  font-size: 20px;
-  vertical-align: super;
-}
-.active {
-  color: black;
-}
