@@ -20,6 +20,7 @@ function formatDate(timestamp) {
   let day = days[date.getDay()];
   return `${day} ${hours}:${minutes}`;
 }
+
 function formatDay(timestamp) {
   let date = new Date(timestamp * 1000);
   let day = date.getDay();
@@ -33,19 +34,17 @@ function displayForecast(response) {
   let forecastHTML = `<div class="row">`;
   forecast.forEach(function (forecastDay, index) {
     if (index < 6) {
-      forecastHTML =
-        forecastHTML +
-        `<div class="col-2">
-      <div class="weather-forecast-date">${formatDay(forecastDay.dt)}</div>
+      forecastHTML = `${forecastHTML}<div class="col-2">
+      <div class="weather-forecast-date">${formatDay(forecastDay.time)}</div>
       <img src="https://shecodes-assets.s3.amazonaws.com/api/weather/icons/${
-        forecastDay.daily.condition.icon
-      }.png" alt="" width="42"/>
+        forecastDay.condition.icon_url
+      }" alt="" width="42"/>
       <div class="weather-forecast-temperatures">
       <span class="weather-forecast-temperature-max">${Math.round(
-        forecastDay.temp.max
+        forecastDay.temperature.max
       )}°</span>
       <span class="weather-forecast-temperature-min">${Math.round(
-        forecastDay.temp.min
+        forecastDay.temperature.min
       )}°</span>
       </div>
       </div>`;
@@ -54,14 +53,18 @@ function displayForecast(response) {
   forecastHTML = forecastHTML + `</div>`;
   forecastElement.innerHTML = forecastHTML;
 }
-function getForecast() {
+function getForecast(coords) {
+  let lon = coords.longitude;
+  let lat = coords.latitude;
   let apiKey = "629340f426964bddabao29a02d5038tc";
-  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=imperial`;
+  let apiUrl = `https://api.shecodes.io/weather/v1/lon=${lon}&lat=${lat}&key=${apiKey}&units=imperial`;
   axios.get(apiUrl).then(displayForecast);
 }
 function displayWeather(response) {
   document.querySelector(".place").innerHTML = response.data.city;
-  document.querySelector(".temp").innerHTML = Math.round(fahrenheitTemperature);
+  document.querySelector(".temp").innerHTML = Math.round(
+    response.data.temperature.current
+  );
   document.querySelector(".humid").innerHTML =
     response.data.temperature.humidity;
   document.querySelector(".wind").innerHTML = Math.round(
@@ -69,17 +72,15 @@ function displayWeather(response) {
   );
   document.querySelector(".descript").innerHTML =
     response.data.condition.description;
-  document.querySelector(".date").innerHTML = formatDate(
-    response.data.dt * 1000
-  );
-  let iconElement = document.querySelector(".icon");
+  let iconElement = document.querySelector("#icon");
   iconElement.setAttribute(
     "src",
     `https://shecodes-assets.s3.amazonaws.com/api/weather/icons/${response.data.condition.icon}.png`
   );
   iconElement.setAttribute("alt", response.data.condition.description);
-  fahrenheitTemperature = response.data.temperature;
   getForecast(response.data.coordinates);
+  let dateElement = document.querySelector(".date");
+  dateElement.innerHTML = formatDate(response.data.time * 1000);
 }
 
 function getCurrentLocation(event) {
@@ -90,12 +91,12 @@ function searchLocation(position) {
   let apiKey = "629340f426964bddabao29a02d5038tc";
   let lon = position.coords.longitude;
   let lat = position.coords.latitude;
-  let apiUrl = `https://api.shecodes.io/v1/weather/current?lon=${lon}&lat=${lat}&key=${apiKey}&units=imperial`;
+  let apiUrl = `https://api.shecodes.io/weather/v1/current?lon=${lon}&lat=${lat}&key=${apiKey}&units=imperial`;
   axios.get(apiUrl).then(displayWeather);
 }
 function searchCity(city) {
   let apiKey = "629340f426964bddabao29a02d5038tc";
-  let apiUrl = `https://api.shecodes.io/v1/weather/current?query=${city}&key=${apiKey}&units=imperial`;
+  let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=imperial`;
   axios.get(apiUrl).then(displayWeather);
 }
 function handleSubmit(event) {
@@ -110,4 +111,4 @@ form.addEventListener("submit", handleSubmit);
 let currentLocationButton = document.querySelector("#current-location-button");
 currentLocationButton.addEventListener("click", getCurrentLocation);
 
-searchCity("Queens");
+searchCity("Cambria Heights");
