@@ -33,18 +33,16 @@ function displayForecast(response) {
   let forecastElement = document.querySelector("#forecast");
   let forecastHTML = `<div class="row">`;
   forecast.forEach(function (forecastDay, index) {
-    if (index < 6) {
+    if (index > 0 && index < 6) {
       forecastHTML = `${forecastHTML}<div class="col-2">
       <div class="weather-forecast-date">${formatDay(forecastDay.time)}</div>
-      <img src="https://shecodes-assets.s3.amazonaws.com/api/weather/icons/${
-        forecastDay.condition.icon_url
-      }" alt="" width="42"/>
+      <img src="${forecastDay.condition.icon_url}" alt="" width="42"/>
       <div class="weather-forecast-temperatures">
       <span class="weather-forecast-temperature-max">${Math.round(
-        forecastDay.temperature.max
+        forecastDay.temperature.maximum
       )}°</span>
       <span class="weather-forecast-temperature-min">${Math.round(
-        forecastDay.temperature.min
+        forecastDay.temperature.minimum
       )}°</span>
       </div>
       </div>`;
@@ -78,6 +76,7 @@ function displayWeather(response) {
     `https://shecodes-assets.s3.amazonaws.com/api/weather/icons/${response.data.condition.icon}.png`
   );
   iconElement.setAttribute("alt", response.data.condition.description);
+  fahrenheitTemperature = response.data.temperature;
   getForecast(response.data.coordinates);
   let dateElement = document.querySelector(".date");
   dateElement.innerHTML = formatDate(response.data.time * 1000);
@@ -110,5 +109,7 @@ form.addEventListener("submit", handleSubmit);
 
 let currentLocationButton = document.querySelector("#current-location-button");
 currentLocationButton.addEventListener("click", getCurrentLocation);
+
+let fahrenheitTemperature = null;
 
 searchCity("Cambria Heights");
